@@ -100,18 +100,22 @@ class MCP_Node:
 
     def ForceBrakeRelease(self, Motor):
         if Motor == "Motor1":
+            (self.node.sdo[0x3025][1]).raw = 0x00
             (self.node.sdo[0x3024][1]).raw = 0x01
             print("release_M1")
         elif Motor == "Motor2":
+            (self.node.sdo[0x3025][2]).raw = 0x00
             (self.node.sdo[0x3024][2]).raw = 0x01
             print("release_M2")
         else:
             raise ValueError("Invalid motor specified")
 
-    def ForceBrakeClose(self, Motor):
+    def ForceBrakeApply(self, Motor):
         if Motor == "Motor1":
+            (self.node.sdo[0x3024][1]).raw = 0x00
             (self.node.sdo[0x3025][1]).raw = 0x01
         elif Motor == "Motor2":
+            (self.node.sdo[0x3024][2]).raw = 0x00
             (self.node.sdo[0x3025][2]).raw = 0x01
         else:
             raise ValueError("Invalid motor specified")

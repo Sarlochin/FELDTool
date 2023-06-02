@@ -782,7 +782,7 @@ class FELDTool_main_app(ctk.CTk):
         self.faults_button.pack(side=LEFT, padx=5)
 
         self.parameter_button = ctk.CTkButton(second_line, text="PARAMETER", command=self.open_parameters)
-        self.parameter_button.configure()#(state=ctk.ENABLED)
+        self.parameter_button.configure(state=ctk.DISABLED)
         self.parameter_button.pack(side=LEFT, padx=5)
 
         self.live_view_button = ctk.CTkButton(second_line, text="LIVE VIEW", command=self.open_LiveView)
@@ -800,6 +800,10 @@ class FELDTool_main_app(ctk.CTk):
         self.release_brakes_button = ctk.CTkButton(third_line, text="RELEASE BRAKES", command=self.release_all)
         self.release_brakes_button.configure(state=ctk.DISABLED)
         self.release_brakes_button.pack(side=LEFT, padx=5)
+
+        self.apply_brakes_button = ctk.CTkButton(third_line, text="APPLY BRAKES", command=self.apply_all)
+        self.apply_brakes_button.configure(state=ctk.DISABLED)
+        self.apply_brakes_button.pack(side=LEFT, padx=5)
 
         self.deactivate_all_button = ctk.CTkButton(third_line, text="DEACTIVATE ALL", command=self.deactivate_all)
         self.deactivate_all_button.configure(state=ctk.DISABLED)
@@ -889,6 +893,7 @@ class FELDTool_main_app(ctk.CTk):
             self.live_view_button.configure(state=ctk.NORMAL)
             self.activate_all_button.configure(state=ctk.NORMAL)
             self.release_brakes_button.configure(state=ctk.NORMAL)
+            self.apply_brakes_button.configure(state=ctk.NORMAL)
             self.deactivate_all_button.configure(state=ctk.NORMAL)
             self.set_rpm_button.configure(state=ctk.NORMAL)
             self.set_torque_button.configure(state=ctk.NORMAL)
@@ -915,6 +920,12 @@ class FELDTool_main_app(ctk.CTk):
         for controller in controllers:
             controller.ForceBrakeRelease("Motor1")
             controller.ForceBrakeRelease("Motor2")
+        print("release_all")
+
+    def apply_all(self):
+        for controller in controllers:
+            controller.ForceBrakeApply("Motor1")
+            controller.ForceBrakeApply("Motor2")
         print("release_all")
 
     def update_info_text(self):
