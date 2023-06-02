@@ -82,11 +82,16 @@ class MCP_Node:
         (self.node.sdo[0x1010][1]).raw = 0x65766173
         print("saved to memory!")
 
+
     def EnableMotor(self, Motor):
         if Motor == "Motor1":
             (self.node.sdo[0x6040][1]).raw = 0xF
+            (self.node.sdo[0x3025][1]).raw = 0x00
+            (self.node.sdo[0x3024][1]).raw = 0x00
         elif Motor == "Motor2":
             (self.node.sdo[0x6040][2]).raw = 0xF
+            (self.node.sdo[0x3025][2]).raw = 0x00
+            (self.node.sdo[0x3024][2]).raw = 0x00
         else:
             raise ValueError("Invalid motor specified")
 

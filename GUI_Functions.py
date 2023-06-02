@@ -52,14 +52,23 @@ class FELDFaults(ctk.CTkToplevel):
                                                                                                                      '')
                                 # Append fault to the appropriate list based on the current register
                                 if register == "Application":
+                                    app_text.append(node.GetCanID())
+                                    app_text.append(": ")
                                     app_text.append(fault)
                                 elif register == "Motor1":
+                                    mot1_text.append(node.GetCanID())
+                                    app_text.append(": ")
                                     mot1_text.append(fault)
                                 elif register == "Motor2":
+                                    mot2_text.append(node.GetCanID())
+                                    app_text.append(": ")
                                     mot2_text.append(fault)
                                 elif register == "PreDefinedErrorField":
+                                    error_text.append(node.GetCanID())
+                                    app_text.append(": ")
                                     error_text.append('\n' + fault)
                                 else:
+                                    error_text.append(node.GetCanID())
                                     error_text.append(fault)
                         else:
                             # Convert faults to a string and remove any brackets
@@ -68,14 +77,24 @@ class FELDFaults(ctk.CTkToplevel):
                                 '', '')
                             # Append fault to the appropriate list based on the current register
                             if register == "Application":
+                                app_text.append(node.GetCanID())
+                                app_text.append(": ")
                                 app_text.append(fault)
                             elif register == "Motor1":
+                                mot1_text.append(node.GetCanID())
+                                app_text.append(": ")
                                 mot1_text.append(fault)
                             elif register == "Motor2":
+                                mot2_text.append(node.GetCanID())
+                                app_text.append(": ")
                                 mot2_text.append(fault)
                             elif register == "PreDefinedErrorField":
+                                error_text.append(node.GetCanID())
+                                app_text.append(": ")
                                 error_text.append('\n' + fault)
                             else:
+                                error_text.append(node.GetCanID())
+                                app_text.append(": ")
                                 error_text.append(fault)
 
             update_error_textbox(error_text)
@@ -858,10 +877,11 @@ class FELDTool_main_app(ctk.CTk):
         print(f"RPM set to: {rpm}")
 
     def set_torque(self):
-        torque = self.torque_entry.get()
+        torque = float(self.torque_entry.get())
         self.torque_entry.delete(0, "end")
         for controller in controllers:
-            controller.SetValue(0x6042, 4, torque)
+            controller.SetValue(0x6071, 1, torque)
+            controller.SetValue(0x6071, 2, torque)
         print(f"Torque set to: {torque}")
 
     def set_current_limit(self):
@@ -926,7 +946,7 @@ class FELDTool_main_app(ctk.CTk):
         for controller in controllers:
             controller.ForceBrakeApply("Motor1")
             controller.ForceBrakeApply("Motor2")
-        print("release_all")
+        print("apply_all")
 
     def update_info_text(self):
         node_states_text = []
