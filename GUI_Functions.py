@@ -10,6 +10,8 @@ from MCPRegisters import ParameterRegisterData
 from MCP_Functions import ConnectToCan, MCP_Node, NetworkDisconnect
 from main import controllers
 
+amp_hours = 0
+
 
 class FELDFaults(ctk.CTkToplevel):
     def __init__(self, parent):
@@ -337,18 +339,7 @@ class FELDConnection(ctk.CTkToplevel):
 # END ########################################################
 
 
-
-
-
-
-
-
-
-
-
-
-
-#HERE
+# HERE
 class FELDParameter(ctk.CTkToplevel):
     def __init__(self, parent):
         super().__init__(parent)
@@ -380,7 +371,7 @@ class FELDParameter(ctk.CTkToplevel):
         self.update_controller(self.controller_var.get())
 
         # Create tabview
-        self.tabframe = ctk.CTkScrollableFrame(self) # To get the lil fugg to scroll
+        self.tabframe = ctk.CTkScrollableFrame(self)  # To get the lil fugg to scroll
         self.tabframe.pack(fill="both", expand=True)
 
         self.tabview = ctk.CTkTabview(self.tabframe)
@@ -527,19 +518,6 @@ class FELDParameter(ctk.CTkToplevel):
 
     def _resize_inner_frame(self, event):
         self.canvas.itemconfig("inner", width=event.width)
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 # class FELDLiveView(ctk.CTkToplevel):
@@ -776,7 +754,7 @@ class FELDTool_main_app(ctk.CTk):
     def __init__(self):
         super().__init__()
 
-        self.geometry('800x600')
+        self.geometry('800x1200')
         self.title('FELDTool')
 
         # First line
@@ -866,7 +844,91 @@ class FELDTool_main_app(ctk.CTk):
         self.set_current_limit_button.configure(state=ctk.DISABLED)
         self.set_current_limit_button.grid(row=0, column=2)
 
+        # Seventh line
+        seventh_line = ctk.CTkFrame(self)
+        seventh_line.pack(fill="x")
+
+        rpm_accel_ramp_label = ctk.CTkLabel(seventh_line, text="RPM accel ramp")
+        rpm_accel_ramp_label.grid(row=0, column=0)
+
+        self.rpm_accel_ramp_entry = ctk.CTkEntry(seventh_line)
+        self.rpm_accel_ramp_entry.grid(row=0, column=1)
+
+        self.set_rpm_accel_ramp_button = ctk.CTkButton(seventh_line, text="SET", command=self.set_rpm_accel_ramp)
+        self.set_rpm_accel_ramp_button.configure(state=ctk.DISABLED)
+        self.set_rpm_accel_ramp_button.grid(row=0, column=2)
+
+        # Eighth line
+        eighth_line = ctk.CTkFrame(self)
+        eighth_line.pack(fill="x")
+
+        rpm_decel_ramp_label = ctk.CTkLabel(eighth_line, text="RPM decel ramp")
+        rpm_decel_ramp_label.grid(row=0, column=0)
+
+        self.rpm_decel_ramp_entry = ctk.CTkEntry(eighth_line)
+        self.rpm_decel_ramp_entry.grid(row=0, column=1)
+
+        self.set_rpm_decel_ramp_button = ctk.CTkButton(eighth_line, text="SET", command=self.set_rpm_decel_ramp)
+        self.set_rpm_decel_ramp_button.configure(state=ctk.DISABLED)
+        self.set_rpm_decel_ramp_button.grid(row=0, column=2)
+
+        # Ninth line
+        ninth_line = ctk.CTkFrame(self)
+        ninth_line.pack(fill="x")
+
+        p_val_label = ctk.CTkLabel(ninth_line, text="P-Val")
+        p_val_label.grid(row=0, column=0)
+
+        self.p_val_entry = ctk.CTkEntry(ninth_line)
+        self.p_val_entry.grid(row=0, column=1)
+
+        self.set_p_val_button = ctk.CTkButton(ninth_line, text="SET", command=self.set_p_val)
+        self.set_p_val_button.configure(state=ctk.DISABLED)
+        self.set_p_val_button.grid(row=0, column=2)
+
+        # tenth line
+        tenth_line = ctk.CTkFrame(self)
+        tenth_line.pack(fill="x")
+
+        i_val_label = ctk.CTkLabel(tenth_line, text="I-Val")
+        i_val_label.grid(row=0, column=0)
+
+        self.i_val_entry = ctk.CTkEntry(tenth_line)
+        self.i_val_entry.grid(row=0, column=1)
+
+        self.set_i_val_button = ctk.CTkButton(tenth_line, text="SET", command=self.set_i_val)
+        self.set_i_val_button.configure(state=ctk.DISABLED)
+        self.set_i_val_button.grid(row=0, column=2)
+
+        # eleventh line
+        eleventh_line = ctk.CTkFrame(self)
+        eleventh_line.pack(fill="x")
+
+        d_val_label = ctk.CTkLabel(eleventh_line, text="D-Val")
+        d_val_label.grid(row=0, column=0)
+
+        self.d_val_entry = ctk.CTkEntry(eleventh_line)
+        self.d_val_entry.grid(row=0, column=1)
+
+        self.set_d_val_button = ctk.CTkButton(eleventh_line, text="SET", command=self.set_d_val)
+        self.set_d_val_button.configure(state=ctk.DISABLED)
+        self.set_d_val_button.grid(row=0, column=2)
+
+        # Twelfth line
+        twelfth_line = ctk.CTkFrame(self)
+        twelfth_line.pack(fill="x")
+
+        self.set_current_control_button = ctk.CTkButton(twelfth_line, text="SET CURRENT CONTROL",
+                                                        command=self.set_current_control)
+        self.set_current_control_button.configure(state=ctk.DISABLED)
+        self.set_current_control_button.grid(row=0, column=0)
+
+        self.set_rpm_control_button = ctk.CTkButton(twelfth_line, text="SET RPM CONTROL", command=self.set_rpm_control)
+        self.set_rpm_control_button.configure(state=ctk.DISABLED)
+        self.set_rpm_control_button.grid(row=0, column=1)
+
         self.update_info_text()
+        # self.geometry('800x800')
 
     def set_rpm(self):
         rpm = self.rpm_entry.get()
@@ -885,13 +947,72 @@ class FELDTool_main_app(ctk.CTk):
         print(f"Torque set to: {torque}")
 
     def set_current_limit(self):
-        current_limit = self.current_limit_entry.get()
+        current_limit = float(self.current_limit_entry.get())
         self.current_limit_entry.delete(0, "end")
         for controller in controllers:
             controller.SetValue(0x3009, 1, current_limit)
             controller.SetValue(0x3009, 2, current_limit)
-
         print(f"Current limit set to: {current_limit}")
+
+    def set_rpm_accel_ramp(self):
+        self.deactivate_all()
+        rpm_ramp = float(self.rpm_accel_ramp_entry.get())
+        self.rpm_accel_ramp_entry.delete(0, "end")
+        for controller in controllers:
+            controller.SetValue(0x3011, 1, rpm_ramp)
+            controller.SetValue(0x3011, 2, rpm_ramp)
+        print(f"RPM acel ramp set to: {rpm_ramp}")
+
+    def set_rpm_decel_ramp(self):
+        self.deactivate_all()
+        rpm_ramp = float(self.rpm_decel_ramp_entry.get())
+        self.rpm_decel_ramp_entry.delete(0, "end")
+        for controller in controllers:
+            controller.SetValue(0x3012, 1, rpm_ramp)
+            controller.SetValue(0x3012, 2, rpm_ramp)
+        print(f"RPM decel ramp set to: {rpm_ramp}")
+
+    def set_p_val(self):
+        self.deactivate_all()
+        p_val = float(self.p_val_entry.get())
+        self.p_val_entry.delete(0, "end")
+        for controller in controllers:
+            controller.SetValue(0x60F9, 1, p_val)
+            controller.SetValue(0x60F9, 5, p_val)
+        print(f"P-Val set to: {p_val}")
+
+    def set_i_val(self):
+        self.deactivate_all()
+        i_val = float(self.i_val_entry.get())
+        self.i_val_entry.delete(0, "end")
+        for controller in controllers:
+            controller.SetValue(0x60F9, 2, i_val)
+            controller.SetValue(0x60F9, 6, i_val)
+        print(f"I-Val set to: {i_val}")
+
+    def set_d_val(self):
+        self.deactivate_all()
+        d_val = float(self.d_val_entry.get())
+        self.d_val_entry.delete(0, "end")
+        for controller in controllers:
+            controller.SetValue(0x60F9, 3, d_val)
+            controller.SetValue(0x60F9, 7, d_val)
+        print(f"D-Val set to: {d_val}")
+
+    def set_current_control(self):
+        self.deactivate_all()
+        for controller in controllers:
+            controller.SetValue(0x6060, 1, 0x03)
+            controller.SetValue(0x6060, 2, 0x03)
+        self.release_all()
+        print(f"Current control mode")
+
+    def set_rpm_control(self):
+        self.deactivate_all()
+        for controller in controllers:
+            controller.SetValue(0x6060, 1, 0x06)
+            controller.SetValue(0x6060, 2, 0x06)
+        print(f"RPM control mode")
 
     def open_FaultsView(self):
         fault_window = FELDFaults(self)
@@ -918,6 +1039,15 @@ class FELDTool_main_app(ctk.CTk):
             self.set_rpm_button.configure(state=ctk.NORMAL)
             self.set_torque_button.configure(state=ctk.NORMAL)
             self.set_current_limit_button.configure(state=ctk.NORMAL)
+            self.set_rpm_control_button.configure(state=ctk.NORMAL)
+            self.set_rpm_accel_ramp_button.configure(state=ctk.NORMAL)
+            self.set_rpm_decel_ramp_button.configure(state=ctk.NORMAL)
+            self.set_p_val_button.configure(state=ctk.NORMAL)
+            self.set_i_val_button.configure(state=ctk.NORMAL)
+            self.set_d_val_button.configure(state=ctk.NORMAL)
+            self.set_current_control_button.configure(state=ctk.NORMAL)
+            self.set_rpm_control_button.configure(state=ctk.NORMAL)
+            self.geometry('800x1200')
         pass
 
     def open_LiveView(self):
@@ -949,14 +1079,41 @@ class FELDTool_main_app(ctk.CTk):
         print("apply_all")
 
     def update_info_text(self):
+        global amp_hours
         node_states_text = []
         for controller in controllers:
             node_states_text.append("Node: ")
             node_states_text.append(controller.GetCanID())
             node_states_text.append(controller.GetNodeState())
+            node_states_text.append("\n")
+
+            # for controller in controllers:
+            #     node_states_text.append("Controller: ")
+            #     node_states_text.append(controller.GetCanID)
+            #     node_states_text.append(" M1[")
+            #     node_states_text.append(controller.GetValue(0x6041, 1))
+            #     node_states_text.append("];")
+            #     node_states_text.append(" M2[")
+            #     node_states_text.append(controller.GetValue(0x6041, 2))
+            #     node_states_text.append("];")
+            #     node_states_text.append("\n")
+
+        amps = 0
+        for controller in controllers:
+            amps += controller.GetValue(0x6078, 1)
+            amps += controller.GetValue(0x6078, 2)
+        amp_hours += amps * 0.1 / 3600.0
+
+        node_states_text.append("Mot Amps: ")
+        node_states_text.append(round(amps / 4.0, 2))
+        node_states_text.append("\n")
+
+        node_states_text.append("Amp Hours: ")
+        node_states_text.append(round(amp_hours, 5))
+        node_states_text.append("\n")
 
         self.info_text.configure(text=node_states_text, anchor="nw")
-        self.after(1000, self.update_info_text)
+        self.after(100, self.update_info_text)
 
 
 app = FELDTool_main_app()
