@@ -14,7 +14,7 @@
 # TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import time
-
+import os
 import canopen
 import MCPRegisters as mcp_reg
 
@@ -25,12 +25,22 @@ pathEDS1 = 'MCP-48-20-02.eds'  # path to .eds file
 
 def ConnectToCan(COM, Baud):
     try:
-        network.connect(bustype='slcan', channel=COM, bitrate=Baud)  # connect to network
+        # Bring down the CAN interface
+        os.system('sudo ifconfig can0 down')
+        time.sleep(1)  # Allow some time for the interface to go down
+
+        # Set up the CAN interface
+        os.system('sudo ip link set can0 type can bitrate 500000') #100000
+        os.system('sudo ifconfig can0 up')
+
+        network.connect(bustype='socketcan', channel=COM, bitrate=Baud)  # connect to network
         network.send_message(0x0, [0x1, 0])  # operational
         print("Operational Sent")
         return (0)
-    except:
+    except Exception as e:
+        print(f"Error connecting to CAN bus: {e}")
         return (-1)
+
 
 
 def NetworkDisconnect():

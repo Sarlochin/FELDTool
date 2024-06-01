@@ -249,7 +249,7 @@ class FELDConnection(ctk.CTkToplevel):
     def __init__(self, parent):
         super().__init__(parent)
         self.title("FELDConnection")
-        self.COM = tk.StringVar(value="COM12")
+        self.COM = tk.StringVar(value="can0")
         self.BAUD = tk.StringVar(value="500000")
         self.nodes_to_add = []
 
@@ -312,7 +312,7 @@ class FELDConnection(ctk.CTkToplevel):
             messagebox.showerror("Error", f"One or more nodes not valid: {e}")
 
     def connect_can(self):
-        result = ConnectToCan(self.COM.get(), int(self.BAUD.get()))
+        result = ConnectToCan("can0", 500000)
         if result == 0:
             self.connect_button.configure(text="CONNECTION OK")
             self.connect_button.configure(state=ctk.DISABLED)
